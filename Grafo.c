@@ -5,11 +5,11 @@ typedef struct no No;
 
 struct grafo {
 	No * inicial;
-	
 };
 struct no {
 	int key;
 	No * prox;
+	No * vizinhos;
 };
 
 
@@ -35,22 +35,21 @@ void IncluirVertice(Grafo * g, int key) {
 		No * node = g->inicial;
 		No * ant = NULL;
 		while(node != NULL) {
-			
 			//Já existente
 			if(node->key == key) return;
-			
 			ant = node;
 			node = node->prox;
 		}
-		
 		//Criar o no
 		No * no = (No *) malloc(sizeof(sizeof(No)));
 		no->key = key;
 		no->prox = NULL;
-		
 		ant->prox = no;
-			
 	}	
+}
+
+void IncluirAresta(Grafo * g, int key) {
+	
 }
 
 void Imprimir(Grafo * g){
@@ -60,10 +59,8 @@ void Imprimir(Grafo * g){
 		No * node = g->inicial;
 		
 		while (node != NULL) {
-			
 			printf("%d ",node->key);
 			node = node->prox;
-			
 		}
 		
 	}
