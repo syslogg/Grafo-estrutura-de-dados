@@ -45,7 +45,10 @@ void IncluirVertice(Grafo * g, int key) {
 	} else {
 		Vertice * ant = g->inicial;
 		
-		if(ExisteVertice(g,key) == 1) return;
+		if(ExisteVertice(g,key) == 1) {
+			printf("\nERROR: Ja contem vertice com chave '%c'.\n",key);
+			return;	
+		} 
 		
 		//Percorre até chegar no final
 		while(ant->prox != NULL) {
@@ -65,9 +68,18 @@ void IncluirVertice(Grafo * g, int key) {
 void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 	
 	//Verifica se existe o vertice e a aresta
-	if(ExisteVertice(g,vertice1) == 0) return;
-	if(ExisteVertice(g,vertice2) == 0) return;
-	if(ExisteAresta(g,vertice1,vertice2) == 1) return;
+	if(ExisteVertice(g,vertice1) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice1);
+		return;
+	}
+	if(ExisteVertice(g,vertice2) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice2);
+		return;
+	}
+	if(ExisteAresta(g,vertice1,vertice2) == 1) {
+		printf("\nWARNING: Ja contem arestas entre '%c' e '%c'.\n",vertice1,vertice2);
+		return;
+	}
 	
 	Vertice * vert1 = BuscarVertice(g,vertice1);
 	Vertice * vert2 = BuscarVertice(g,vertice2);
@@ -124,9 +136,18 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 }
 
 void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
-	if(ExisteVertice(g,vertice1) == 0) return;
-	if(ExisteVertice(g,vertice2) == 0) return;
-	if(ExisteAresta(g,vertice1,vertice2) == 0) return;
+	if(ExisteVertice(g,vertice1) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice1);
+		return;
+	}
+	if(ExisteVertice(g,vertice2) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice2);
+		return;
+	}
+	if(ExisteAresta(g,vertice1,vertice2) == 0) {
+		printf("\ERROR: Nao existe arestas entre '%c' e '%c'.\n",vertice1,vertice2);
+		return;
+	}
 	
 	Vertice * vert1 = BuscarVertice(g,vertice1);
 	Vertice * vert2 = BuscarVertice(g,vertice2);
@@ -137,19 +158,42 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 	Aresta * aux1 = NULL;
 	Aresta * aux2 = NULL;
 	
+	
+	//Aresta 1
 	while(aresta1->prox != NULL) {
-		
 		if(aresta1->vert->key == vertice2) {
 			//Deletar da lista
-			
-			aux1->prox = aresta1->prox;
+			if(aux1 != NULL) {
+				aux1->prox = aresta1->prox;
+			} else {
+				vert1->primeiroVizinho = aresta1->prox;
+			}
 			free(aresta1);
-			
+			break;
 		}
+		
 		aux1 = aresta1;
 		aresta1 = aresta1->prox;
 	}
 	
+	//Aresta 2
+	while(aresta2->prox != NULL) {
+		if(aresta2->vert->key == vertice1) {
+			//Deletar da lista
+			if(aux2 != NULL) {
+				aux2->prox = aresta2->prox;
+			} else {
+				vert2->primeiroVizinho = aresta2->prox;
+			}
+			free(aresta2);
+			break;
+		}
+		
+		aux2 = aresta2;
+		aresta2 = aresta2->prox;
+	}
+	
+
 	
 }
 

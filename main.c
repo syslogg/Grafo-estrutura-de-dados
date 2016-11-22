@@ -26,8 +26,7 @@ int main(int argc, char *argv[]) {
 	IncluirAresta(grafo,'C','D',4);
 	IncluirAresta(grafo,'D','E',1);
 	
-	
-	DeletarAresta(grafo,'A','B');
+
 
 	Imprimir(grafo);
 	
