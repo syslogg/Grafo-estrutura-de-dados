@@ -13,7 +13,7 @@ void IncluirVertice(Grafo * g, int key);
 void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso);
 
 //Deletar vertice
-void DeletarVertice(Grafo * g, int vertice1, int vertice2);
+void DeletarVertice(Grafo * g, int vertice);
 
 //Deletar aresta
 void DeletarAresta(Grafo * g, int vertice1, int vertice2);

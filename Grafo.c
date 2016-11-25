@@ -108,27 +108,29 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 		
 	}
 	
+	if(vertice1 != vertice2) {
 	
-	//Vertice 2
-	if(vert2->primeiroVizinho == NULL) {
-		Aresta * a = (Aresta *) malloc(sizeof(Aresta));
-		a->peso = peso;
-		a->prox = NULL;
-		a->vert = vert1;
-		vert2->primeiroVizinho = a;
-	} else {
-		Aresta * ant = vert2->primeiroVizinho;
-		
-		while (ant->prox != NULL) {
-			ant = ant->prox;
+		//Vertice 2
+		if(vert2->primeiroVizinho == NULL) {
+			Aresta * a = (Aresta *) malloc(sizeof(Aresta));
+			a->peso = peso;
+			a->prox = NULL;
+			a->vert = vert1;
+			vert2->primeiroVizinho = a;
+		} else {
+			Aresta * ant = vert2->primeiroVizinho;
+			
+			while (ant->prox != NULL) {
+				ant = ant->prox;
+			}
+			
+			Aresta * a = (Aresta *) malloc(sizeof(Aresta));
+			a->peso = peso;
+			a->prox = NULL;
+			a->vert = vert1;
+			ant->prox = a;
+			
 		}
-		
-		Aresta * a = (Aresta *) malloc(sizeof(Aresta));
-		a->peso = peso;
-		a->prox = NULL;
-		a->vert = vert1;
-		ant->prox = a;
-		
 	}
 	
 	
@@ -194,6 +196,91 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 	}
 	
 
+	
+}
+
+void DeletarVertice(Grafo * g, int vertice) {
+	
+	if(ExisteVertice(g,vertice) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice);
+		return;
+	}
+	
+	//Retira todas as arestas daquele vertice
+	Vertice * auxVertice = NULL;
+	Vertice * vert = BuscarVertice(g,vertice);
+	
+	auxVertice = g->inicial;
+	
+	while(auxVertice->prox != NULL) {
+		
+		Aresta * auxAresta = NULL;
+		Aresta * auxAresta2 = NULL;
+		
+		
+		auxAresta = auxVertice->primeiroVizinho;
+		
+		while(auxAresta->prox != NULL) {
+			
+			if(auxAresta->vert->key == vertice) {
+				if(auxAresta2 != NULL) {
+					auxAresta2->prox = auxAresta->prox;
+				} else {
+					auxVertice->primeiroVizinho = auxAresta->prox;
+				}
+				free(auxAresta);
+				break;
+			}
+			auxAresta2 = auxAresta;
+			auxAresta = auxAresta->prox;
+		}
+		auxVertice = auxVertice->prox;
+	}
+	
+	
+	
+	//Matar a lista do vertice
+	Aresta * auxAresta = vert->primeiroVizinho;
+	Aresta * aux2 = NULL;
+	
+	
+	while(auxAresta != NULL) {
+		aux2 = auxAresta;
+		auxAresta = auxAresta->prox;
+		free(aux2);
+	}
+	
+	vert->primeiroVizinho = NULL;
+	
+	
+	//Mata o vertice
+	auxVertice = g->inicial;
+	Vertice * ant = NULL;
+	
+	while(auxVertice != NULL) {
+		
+		if(auxVertice->key == vert->key) {
+			
+			if(vert == g->inicial) {
+				g->inicial = vert->prox;
+			} else {
+				ant->prox = auxVertice->prox;
+			}
+			free(auxVertice);
+			break;
+			
+		}
+		
+		ant = auxVertice;
+		auxVertice = auxVertice->prox;
+	}
+	
+	
+	
+}
+
+void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
+	
 	
 }
 
