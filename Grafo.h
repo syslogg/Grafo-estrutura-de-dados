@@ -26,3 +26,9 @@ void Imprimir(Grafo * g);
 int ExisteVertice (Grafo * g, int key);
 int ExisteAresta(Grafo * g, int vertice1, int vertice2);
 
+// - TODO
+/*
+	- Quantidade de vertice e aresta
+	- Implementar informações de vertices e aresta
+*/
+
