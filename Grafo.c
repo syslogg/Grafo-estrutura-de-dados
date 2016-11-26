@@ -14,12 +14,14 @@ struct vertice {
 	int key;
 	Vertice * prox;
 	Aresta * primeiroVizinho;
+	int peso;
 };
 
 struct aresta {
 	Aresta * prox;
 	Vertice * vert;
 	int peso;
+	int id;
 };
 
 
@@ -29,6 +31,7 @@ struct aresta {
 Grafo * criar(){
 	Grafo * g = (Grafo *) malloc(sizeof(Grafo));
 	g->inicial = NULL;
+	g->peso = -1;
 	return g;
 }
 
@@ -65,7 +68,7 @@ void IncluirVertice(Grafo * g, int key) {
 		
 }
 
-void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
+void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 	
 	//Verifica se existe o vertice e a aresta
 	if(ExisteVertice(g,vertice1) == 0) {
@@ -92,6 +95,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 		a->peso = peso;
 		a->prox = NULL;
 		a->vert = vert2;
+		a->id = id;
 		vert1->primeiroVizinho = a;
 	} else {
 		Aresta * ant = vert1->primeiroVizinho;
@@ -104,6 +108,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 		a->peso = peso;
 		a->prox = NULL;
 		a->vert = vert2;
+		a->id = id;
 		ant->prox = a;
 		
 	}
@@ -116,6 +121,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 			a->peso = peso;
 			a->prox = NULL;
 			a->vert = vert1;
+			a->id = id;
 			vert2->primeiroVizinho = a;
 		} else {
 			Aresta * ant = vert2->primeiroVizinho;
@@ -128,6 +134,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 			a->peso = peso;
 			a->prox = NULL;
 			a->vert = vert1;
+			a->id = id;
 			ant->prox = a;
 			
 		}
@@ -281,6 +288,21 @@ void DeletarVertice(Grafo * g, int vertice) {
 
 void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
 	
+	
+}
+
+void TrocarChaveVertice(Grafo * g, int vertice, int novoVertice) {
+	if(ExisteVertice(g,vertice) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice);
+		return;
+	}
+	
+	Vertice * vert = BuscarVertice(g, vertice);
+	vert->key = novoVertice;
+	
+}
+
+void TodosVizinhos(Grafo * g, int vertice) {
 	
 }
 
