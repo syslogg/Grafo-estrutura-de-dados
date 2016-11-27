@@ -18,19 +18,24 @@ int main(int argc, char *argv[]) {
 	
 	
 	//Ligar vertices
-	IncluirAresta(grafo,'A','B',1);
-	IncluirAresta(grafo,'B','E',2);
-	IncluirAresta(grafo,'B','C',3);
-	IncluirAresta(grafo,'A','C',3);
-	IncluirAresta(grafo,'B','D',2);
-	IncluirAresta(grafo,'C','D',4);
-	IncluirAresta(grafo,'D','E',1);
+	IncluirAresta(grafo,'A','B',1,1);
+	IncluirAresta(grafo,'B','E',2,1);
+	IncluirAresta(grafo,'B','C',3,1);
+	IncluirAresta(grafo,'A','C',3,1);
+	IncluirAresta(grafo,'B','D',2,1);
+	IncluirAresta(grafo,'C','D',4,1);
+	IncluirAresta(grafo,'D','E',1,1);
 	
-	IncluirAresta(grafo,'A','A',2);
+	IncluirAresta(grafo,'A','A',2,1);
 	
 	CaminhoMinimo(grafo, 'A', 'C');
-
-	DeletarVertice(grafo,'A');
+	
+	//Tod
+	
+	//TA
+	//TrocarChaveVertice(grafo, '', 'X');
+	//RV
+	//DeletarVertice(grafo,'A');
 
 	Imprimir(grafo);
 	
