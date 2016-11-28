@@ -418,6 +418,16 @@ void BellmanFord(Grafo * g, int vertice, int origem) {
 
 void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
 	
+	if(ExisteVertice(g,vertice1) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice1);
+		return;
+	}
+	
+	if(ExisteVertice(g,vertice2) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice2);
+		return;
+	}
+	
 	//Inicializar (colocar pesos infinitos);
 	Vertice * init = g->inicial;
 	while(init != NULL) {
@@ -435,7 +445,68 @@ void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
 	
 }
 
+int QtdArestaByVertice(Grafo * g, int vertice) {
+	
+	if(ExisteVertice(g,vertice) == 0) {
+		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice);
+		return;
+	}
+	
+	Vertice * vert = BuscarVertice(g, vertice);
+	Aresta * ares = vert->primeiroVizinho;
+	int i = 0;
+	
+	while(ares != NULL) {
+		i++;
+		ares = ares->prox;
+	}
+	return i;
+}
 
+int QtdVertice(Grafo * g) {
+	Vertice * ant = g->inicial;
+	int i = 0;
+	while (ant != NULL) {
+		i++;
+		ant = ant->prox;
+	}
+	
+	return i;
+	
+}
+
+int QtdArestas(Grafo * g) {
+	Vertice * vert = g->inicial;
+	Aresta * ares = NULL;
+	int i = 0;
+	
+	
+	while (vert != NULL) {
+		
+		ares = vert->primeiroVizinho;
+		
+		while(ares != NULL) {
+			
+			i++;
+			
+			ares = ares->prox;
+		}
+		
+		vert = vert->prox;
+	}
+	
+	return i;
+}
+
+
+//Getters
+
+int getPesoByIdVertice(Grafo * g, int vertice) {
+	
+	Vertice * vert = BuscarVertice(g,vertice);
+	return vert->peso;
+	
+}
 
 //Commands
 
