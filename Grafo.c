@@ -13,25 +13,25 @@ struct grafo {
 struct vertice {
 	int key;
 	Vertice * prox;
-	Aresta * primeiroVizinho;
 	int peso;
+	Aresta * primeiroVizinho;
 };
 
 struct aresta {
 	Aresta * prox;
 	Vertice * vert;
 	int peso;
-	int id;
 };
 
 
-
+int ExisteVertice (Grafo * g, int key);
+int ExisteAresta(Grafo * g, int vertice1, int vertice2);
+Vertice * BuscarVertice (Grafo * g, int key);
 
 
 Grafo * criar(){
 	Grafo * g = (Grafo *) malloc(sizeof(Grafo));
 	g->inicial = NULL;
-	g->peso = -1;
 	return g;
 }
 
@@ -42,6 +42,7 @@ void IncluirVertice(Grafo * g, int key) {
 		v->key = key;
 		v->prox = NULL;
 		v->primeiroVizinho = NULL;
+		v->peso = -1;
 		g->inicial = v;
 		
 		
@@ -62,13 +63,13 @@ void IncluirVertice(Grafo * g, int key) {
 		n->key = key;
 		n->prox = NULL;
 		n->primeiroVizinho = NULL;
-		
+		n->peso = -1;
 		ant->prox = n;
 	}
 		
 }
 
-void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
+void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 	
 	//Verifica se existe o vertice e a aresta
 	if(ExisteVertice(g,vertice1) == 0) {
@@ -95,7 +96,6 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 		a->peso = peso;
 		a->prox = NULL;
 		a->vert = vert2;
-		a->id = id;
 		vert1->primeiroVizinho = a;
 	} else {
 		Aresta * ant = vert1->primeiroVizinho;
@@ -108,7 +108,6 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 		a->peso = peso;
 		a->prox = NULL;
 		a->vert = vert2;
-		a->id = id;
 		ant->prox = a;
 		
 	}
@@ -121,7 +120,6 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 			a->peso = peso;
 			a->prox = NULL;
 			a->vert = vert1;
-			a->id = id;
 			vert2->primeiroVizinho = a;
 		} else {
 			Aresta * ant = vert2->primeiroVizinho;
@@ -134,7 +132,6 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 			a->peso = peso;
 			a->prox = NULL;
 			a->vert = vert1;
-			a->id = id;
 			ant->prox = a;
 			
 		}
@@ -286,25 +283,69 @@ void DeletarVertice(Grafo * g, int vertice) {
 	
 }
 
-void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
-	
-	
-}
 
-void TrocarChaveVertice(Grafo * g, int vertice, int novoVertice) {
-	if(ExisteVertice(g,vertice) == 0) {
-		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice);
-		return;
+int QuantidadeVertice(Grafo * g) {
+	Vertice * a = g->inicial;
+	int c = 0;
+	while (a != NULL) {
+		c++;
+		
+		
+		a = a->prox;
 	}
 	
-	Vertice * vert = BuscarVertice(g, vertice);
-	vert->key = novoVertice;
+	return c;
+}
+
+//Caminho minimo
+void Relaxamento (Grafo * g, int inicio) {
+	
+	//Vertice * ant = g->inicial;
+	
+	Vertice * origin = BuscarVertice(g,inicio);
+	Vertice * verd = origin;
+	origin->peso = 0;
+	int quant = QuantidadeVertice(g), i;
+	
+	while(quant-1 > i) {
+		
+		Aresta * ant2 = origin->primeiroVizinho;
+		
+		
+		/*if(TodosVisitados(g) == 1) 
+			stop = 0;*/
+		
+		//int control = 0;
+		while(ant2 != NULL) {
+			
+			//Navega pelos vizinhos
+			Vertice * vertV = ant2->vert;
+			
+			
+			
+			vertV->peso = (vertV->peso > origin->peso + ant2->peso) || vertV-> peso == -1 ? origin->peso + ant2->peso : vertV->peso;
+			
+			
+			
+			ant2 = ant2->prox;
+		}
+		origin = origin->prox == NULL ? g->inicial : origin->prox;
+		i++;
+	}
+	
+	
+	
+}
+void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
+	//Relaxamento
+	
+	Relaxamento(g, vertice1);
+	
+	
 	
 }
 
-void TodosVizinhos(Grafo * g, int vertice) {
-	
-}
+
 
 //Commands
 
@@ -313,7 +354,7 @@ void Imprimir(Grafo * g){
 	
 	
 	while(ant != NULL) {
-		printf("%c -> ",ant->key);
+		printf("%c - Peso: %d -> ",ant->key, ant->peso);
 		
 		Aresta * ant2 = ant->primeiroVizinho;
 		printf("[ ");
@@ -328,6 +369,7 @@ void Imprimir(Grafo * g){
 	printf("\n");
 	
 }
+
 
 int ExisteVertice (Grafo * g, int key) {
 	Vertice * ant = g->inicial;
