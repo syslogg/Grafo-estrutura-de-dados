@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "Grafo.h"
 typedef struct no No;
 typedef struct aresta Aresta;
@@ -333,6 +334,14 @@ int QuantidadeVertice(Grafo * g) {
 //Caminho minimo
 void Relaxamento (Grafo * g, int inicio) {
 	
+	//Inicializar (colocar pesos infinitos);
+	Vertice * init = g->inicial;
+	while(init != NULL) {
+		init->peso = -1;
+		init->anterior = NULL;
+		init = init->prox;
+	}
+	
 	//Vertice * ant = g->inicial;
 	
 	Vertice * origin = BuscarVertice(g,inicio);
@@ -357,12 +366,15 @@ void Relaxamento (Grafo * g, int inicio) {
 			
 			
 			//vertV->peso = (vertV->peso > origin->peso + ant2->peso) || vertV-> peso == -1 ? origin->peso + ant2->peso : vertV->peso;
-			
-			if((vertV->peso > origin->peso + ant2->peso) || vertV-> peso == -1) {
+			//(vertV->peso > origin->peso + ant2->peso) || vertV-> peso == -1
+			if(vertV->peso == -1 || (vertV->peso > (origin->peso + ant2->peso))) {
+				
 				vertV->peso = origin->peso + ant2->peso;
+				printf("%d\n\n", vertV->peso);	
 				vertV->anterior = origin;
-			} else {
-				vertV->peso = vertV->peso;
+				
+				
+				//getch();
 				
 			}
 			
@@ -378,6 +390,7 @@ void Relaxamento (Grafo * g, int inicio) {
 }
 
 void BellmanFord(Grafo * g, int vertice, int origem) {
+	return;
 	Vertice * vert = BuscarVertice(g,vertice);
 	Vertice * origin = BuscarVertice(g,origem);
 	printf("Origem: %c \t Destino: %c\n", origem, vertice);
@@ -387,10 +400,9 @@ void BellmanFord(Grafo * g, int vertice, int origem) {
 	
 	while(vert != origin) {
 		
-		//printf("|%c|\n\n", vert->key);
-		
+		//printf("Vert: %c; Origin: %c\n", vert->key);
 		vert = vert->anterior;
-		
+		//getch();
 		i++;
 	}
 	
@@ -433,13 +445,7 @@ void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
 		return;
 	}
 	
-	//Inicializar (colocar pesos infinitos);
-	Vertice * init = g->inicial;
-	while(init != NULL) {
-		init->peso = -1;
-		init->anterior = NULL;
-		init = init->prox;
-	}
+	
 	
 	//Relaxamento
 	Relaxamento(g, vertice1);
@@ -512,6 +518,29 @@ int getPesoByIdVertice(Grafo * g, int vertice) {
 	return vert->peso;
 	
 }
+
+void RemoveArestaPorId(Grafo * g,int id) {
+	Vertice * ant = g->inicial;
+	
+	
+	while(ant != NULL) {
+		
+		Aresta * ant2 = ant->primeiroVizinho;
+		while(ant2 != NULL) {
+			if(ant2->id == id){
+				//printf("ID - %d - %c --- %c\n", ant2->id ,ant->key, ant2->vert->key);
+				DeletarAresta(g,ant->key, ant2->vert->key);
+				return;
+			}
+				
+			ant2 = ant2->prox;
+		}
+		ant = ant->prox;
+	}
+	
+	
+}
+
 
 //Commands
 

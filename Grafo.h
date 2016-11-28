@@ -37,7 +37,7 @@ int QtdArestaByVertice(Grafo * g, int vertice);
 //Getters
 int getPesoByIdVertice(Grafo * g, int vertice);
 
-
+void RemoveArestaPorId(Grafo * g,int id);
 
 // - TODO
 /*
