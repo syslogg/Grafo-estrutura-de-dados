@@ -15,6 +15,7 @@ struct vertice {
 	Vertice * prox;
 	int peso;
 	Aresta * primeiroVizinho;
+	Vertice * anterior;
 };
 
 struct aresta {
@@ -323,8 +324,15 @@ void Relaxamento (Grafo * g, int inicio) {
 			
 			
 			
-			vertV->peso = (vertV->peso > origin->peso + ant2->peso) || vertV-> peso == -1 ? origin->peso + ant2->peso : vertV->peso;
+			//vertV->peso = (vertV->peso > origin->peso + ant2->peso) || vertV-> peso == -1 ? origin->peso + ant2->peso : vertV->peso;
 			
+			if((vertV->peso > origin->peso + ant2->peso) || vertV-> peso == -1) {
+				vertV->peso = origin->peso + ant2->peso;
+				vertV->anterior = origin;
+			} else {
+				vertV->peso = vertV->peso;
+				
+			}
 			
 			
 			ant2 = ant2->prox;
@@ -336,11 +344,66 @@ void Relaxamento (Grafo * g, int inicio) {
 	
 	
 }
-void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
-	//Relaxamento
+
+void BellmanFord(Grafo * g, int vertice, int origem) {
+	Vertice * vert = BuscarVertice(g,vertice);
+	Vertice * origin = BuscarVertice(g,origem);
+	printf("Origem: %c \t Destino: %c\n", origem, vertice);
+	printf("%c --> ",origem);
 	
+	int i = 0;
+	
+	while(vert != origin) {
+		
+		//printf("|%c|\n\n", vert->key);
+		
+		vert = vert->anterior;
+		
+		i++;
+	}
+	
+	
+	vert = BuscarVertice(g,vertice);
+	int arr [i];
+	int tan = i;
+	i = 0;
+	while(vert != origin) {
+		
+		arr[i] = vert->key;
+		i++;
+		
+		vert = vert->anterior;
+	}
+	
+	i = 0;
+	for(i = tan-1; i >= 0; i--) {
+		if(i != 0) printf("%c -->",arr[i]);
+		else printf(" %c", arr[i]);
+	}
+	
+	printf("\n\n");
+	
+	
+	
+}
+
+
+
+void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
+	
+	//Inicializar (colocar pesos infinitos);
+	Vertice * init = g->inicial;
+	while(init != NULL) {
+		init->peso = -1;
+		init->anterior = NULL;
+		init = init->prox;
+	}
+	
+	//Relaxamento
 	Relaxamento(g, vertice1);
 	
+	//Algoritmo de Bellman-ford
+	BellmanFord(g, vertice2,vertice1);
 	
 	
 }

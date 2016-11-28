@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 	IncluirAresta(grafo,'D','A',3);
 	IncluirAresta(grafo,'B','D',5);
 	
-	CaminhoMinimo(grafo, 'D', 'C');
+	CaminhoMinimo(grafo, 'D', 'B');
 
 	//DeletarVertice(grafo,'A');
 
