@@ -3,7 +3,7 @@ Order=0,1,2
 Focused=1
 [Editor_0]
 <<<<<<< HEAD
-CursorCol=2
+CursorCol=4
 =======
 CursorCol=4
 >>>>>>> 58f4108e37d851d3bfd0e04b8480805f8d3f3333
@@ -12,14 +12,14 @@ TopLine=1
 LeftChar=1
 [Editor_1]
 <<<<<<< HEAD
-CursorCol=48
-CursorRow=32
+CursorCol=75
+CursorRow=13
 TopLine=1
 LeftChar=1
 [Editor_2]
-CursorCol=3
-CursorRow=308
-TopLine=280
+CursorCol=11
+CursorRow=17
+TopLine=4
 =======
 CursorCol=75
 CursorRow=13

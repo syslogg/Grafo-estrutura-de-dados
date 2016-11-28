@@ -22,6 +22,7 @@ struct aresta {
 	Aresta * prox;
 	Vertice * vert;
 	int peso;
+	int id;
 };
 
 
@@ -97,7 +98,7 @@ void IncluirVertice(Grafo * g, int key) {
 		
 }
 
-void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
+void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 	
 	//Verifica se existe o vertice e a aresta
 	if(ExisteVertice(g,vertice1) == 0) {
@@ -124,6 +125,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 		a->peso = peso;
 		a->prox = NULL;
 		a->vert = vert2;
+		a->id = id;
 		vert1->primeiroVizinho = a;
 	} else {
 		Aresta * ant = vert1->primeiroVizinho;
@@ -136,6 +138,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 		a->peso = peso;
 		a->prox = NULL;
 		a->vert = vert2;
+		a->id = id;
 		ant->prox = a;
 		
 	}
@@ -148,6 +151,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 			a->peso = peso;
 			a->prox = NULL;
 			a->vert = vert1;
+			a->id = id;
 			vert2->primeiroVizinho = a;
 		} else {
 			Aresta * ant = vert2->primeiroVizinho;
@@ -160,6 +164,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso) {
 			a->peso = peso;
 			a->prox = NULL;
 			a->vert = vert1;
+			a->id = id;
 			ant->prox = a;
 			
 		}

@@ -18,7 +18,7 @@ void destruir(Grafo * g);
 void IncluirVertice(Grafo * g, int key);
 
 //Incluir aresta
-void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso);
+void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id);
 
 //Deletar vertice
 void DeletarVertice(Grafo * g, int vertice);
