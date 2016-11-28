@@ -10,7 +10,7 @@ int ExisteAresta(Grafo * g, int vertice1, int vertice2);
 
 //Criar grafo
 Grafo * criar();
-
+void destruir(Grafo * g);
 //Incluir vertice
 void IncluirVertice(Grafo * g, int key);
 
@@ -25,6 +25,8 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2);
 
 //Caminho minimo com bellman ford
 void CaminhoMinimo(Grafo * g, int vertice1, int vertice2);
+
+//Fim de programa;
 
 
 

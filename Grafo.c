@@ -36,6 +36,33 @@ Grafo * criar(){
 	return g;
 }
 
+void limpar(Grafo * g) {
+	
+	Vertice * vert = g->inicial;
+	
+	while (vert != NULL) {
+		Aresta * ares = vert->primeiroVizinho;
+		
+		while(ares != NULL) {
+			
+			
+			Aresta * r = ares;
+			ares = ares->prox;
+			free(r);
+		}
+		Vertice * v = vert;
+		vert = vert->prox;
+		free(v);
+	}
+	
+	g->inicial = NULL;
+}
+
+void destruir(Grafo * g) {
+	limpar(g);
+	free(g);
+}
+
 void IncluirVertice(Grafo * g, int key) {
 	
 	if(g->inicial == NULL) {
