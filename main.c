@@ -71,15 +71,7 @@ int main(int argc, char *argv[]) {
 
 	//Imprimir(grafo);
 	
-	//Executar arquivo
-	/*FILE * f = fopen("arquivo.txt","r");
 	
-	if(f == NULL) {
-		printf("Erro ao executar o arquivo");
-		return;
-	}
-	
-	execute(f);*/
 	
 	//Abre console para grafo
 	console(grafo);
@@ -106,6 +98,7 @@ void command(Grafo * g, char * cmd) {
 	
 	if(sscanf(cmd,"CV %c",&params[0]) > 0) {
 		
+		int letter = params[0];
 		IncluirVertice(g,params[0]);
 		
 	} else if (sscanf(cmd,"RV %c",&params[0]) > 0) {
@@ -122,9 +115,40 @@ void command(Grafo * g, char * cmd) {
 		Imprimir(g);
 	} else if (sscanf(cmd,"RA %d",&params[0]) > 0) {
 		RemoveArestaPorId(grafo,params[0]);
-	} else {
+	} else if (!strcmp(cmd,"CRG")) {
+		//Executar arquivo
+		FILE * f = fopen("arquivo.txt","r");
+		
+		if(f == NULL) {
+			printf("Erro ao executar o arquivo");
+			return;
+		}
+		
+		char buf[50];
+		
+		while((fgets(buf, sizeof(buf), f)) != NULL){
+			//Retirar ultimo caracter e colocar EndOfString
+			char c = buf[0];
+			int i = 0;
+			
+			while(c != '\0'){
+				if(c == '\n'){
+					buf[i] = '\0';
+				}
+				c = buf[i++];
+			}
+			
+			
+			command(g,buf);
+		}
+		
+	} else if (!strcmp(cmd,"SVG")) {
+		
+	} 
+	else {
 		printf("\nComando inexistente!\n\n");
 	}
+	
 }
 
 
