@@ -200,7 +200,7 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 	
 	
 	//Aresta 1
-	while(aresta1->prox != NULL) {
+	while(aresta1 != NULL) {
 		if(aresta1->vert->key == vertice2) {
 			//Deletar da lista
 			if(aux1 != NULL) {
@@ -217,7 +217,7 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 	}
 	
 	//Aresta 2
-	while(aresta2->prox != NULL) {
+	while(aresta2 != NULL) {
 		if(aresta2->vert->key == vertice1) {
 			//Deletar da lista
 			if(aux2 != NULL) {
@@ -408,7 +408,7 @@ void BellmanFord(Grafo * g, int vertice, int origem) {
 	
 	
 	vert = BuscarVertice(g,vertice);
-	int arr [i];
+	int * arr = (int *) malloc(i*sizeof(int));
 	int tan = i;
 	i = 0;
 	while(vert != origin) {
@@ -528,7 +528,7 @@ void RemoveArestaPorId(Grafo * g,int id) {
 		Aresta * ant2 = ant->primeiroVizinho;
 		while(ant2 != NULL) {
 			if(ant2->id == id){
-				//printf("ID - %d - %c --- %c\n", ant2->id ,ant->key, ant2->vert->key);
+				printf("ID - %d - %c --- %c\n", ant2->id ,ant->key, ant2->vert->key);
 				DeletarAresta(g,ant->key, ant2->vert->key);
 				return;
 			}

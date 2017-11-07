@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 	IncluirAresta(grafo,'C','D',4,6);
 	IncluirAresta(grafo,'D','E',1,7);
 	*/
-	int i;
+	/*int i;
 	for(i = 0; i < 14; i++) {
 		IncluirVertice(grafo,'A'+i);
 	}
@@ -61,16 +61,17 @@ int main(int argc, char *argv[]) {
 	IncluirAresta(grafo, 'J', 'L', 8, 19);
 	IncluirAresta(grafo, 'J', 'K', 13, 20);
 	IncluirAresta(grafo, 'K', 'M', 9, 21);
-	IncluirAresta(grafo, 'K', 'N', 6, 22);
+	IncluirAresta(grafo, 'K', 'N', 6, 22);*/
 	
-	CaminhoMinimo(grafo, 'A', 'D');
+	//CaminhoMinimo(grafo, 'A', 'D');
 	
 	//RemoveArestaPorId(grafo,1);
 	
 	//DeletarVertice(grafo,'A');
 
-	Imprimir(grafo);
+	//Imprimir(grafo);
 	
+	//Executar arquivo
 	/*FILE * f = fopen("arquivo.txt","r");
 	
 	if(f == NULL) {
@@ -79,7 +80,9 @@ int main(int argc, char *argv[]) {
 	}
 	
 	execute(f);*/
-	//console(grafo);
+	
+	//Abre console para grafo
+	console(grafo);
 	
 	//fclose(f);
 	return 0;
@@ -89,6 +92,7 @@ void console (Grafo * g) {
 	
 	while(1) {
 		char input[500];
+		printf(">");
 		gets(input);
 		fflush(stdin);
 		command(g,input);
@@ -118,6 +122,8 @@ void command(Grafo * g, char * cmd) {
 		Imprimir(g);
 	} else if (sscanf(cmd,"RA %d",&params[0]) > 0) {
 		RemoveArestaPorId(grafo,params[0]);
+	} else {
+		printf("\nComando inexistente!\n\n");
 	}
 }
 
