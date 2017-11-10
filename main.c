@@ -85,6 +85,7 @@ void console (Grafo * g) {
 	while(1) {
 		char input[500];
 		printf(">");
+		fflush(stdin);
 		gets(input);
 		fflush(stdin);
 		command(g,input);
@@ -97,9 +98,8 @@ void command(Grafo * g, char * cmd) {
 	int params[500];
 	
 	if(sscanf(cmd,"CV %c",&params[0]) > 0) {
-		
-		int letter = params[0];
-		IncluirVertice(g,params[0]);
+		char letter = params[0];
+		IncluirVertice(g,letter);
 		
 	} else if (sscanf(cmd,"RV %c",&params[0]) > 0) {
 		
