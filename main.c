@@ -102,8 +102,8 @@ void command(Grafo * g, char * cmd) {
 		IncluirVertice(g,letter);
 		
 	} else if (sscanf(cmd,"RV %c",&params[0]) > 0) {
-		
-		DeletarVertice(g,params[0]);
+		char letter = params[0];
+		DeletarVertice(g,letter);
 		
 	} else if (sscanf(cmd,"CA %d %c %c %d",&params[0], &params[1], &params[2], &params[3]) > 0) {
 		

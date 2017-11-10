@@ -275,12 +275,13 @@ void DeletarVertice(Grafo * g, int vertice) {
 	Aresta * arestaAux = vert->primeiroVizinho;
 	
 	while(arestaAux != NULL) {
+		Aresta * prox = arestaAux->prox;
 		RetirarIncidenciaDaAresta(g, arestaAux);
-		arestaAux = arestaAux->prox;
+		arestaAux = prox;
 	}
 	
 	//Matar o vertice
-	//free(vert);
+	free(vert);
 	
 	/*
 	//Retirar incidencia daquele vertice nas listas
