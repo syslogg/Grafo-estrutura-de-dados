@@ -237,29 +237,30 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 	
 }
 
-void RetirarIncidenciaDaAresta(Grafo * g, Aresta * aresta) {
+void RetirarIncidenciaDaAresta(Grafo * g, Vertice * vertice) {
 	if(g != NULL) {
 		Vertice * aux = g->inicial;
+		
 		while(aux != NULL) {
 			
 			Aresta * aresAux = aux->primeiroVizinho;
 			Aresta * aresAnt = NULL;
 			while (aresAux != NULL) {
-				
-				if(aresta == aresAux){
+				Aresta * prox = aresAux->prox;
+				if(vertice == aresAux->vert){
 					if(aresAnt == NULL) {
-						aux->primeiroVizinho = aresta->prox;
+						aux->primeiroVizinho = aresAux->prox;
 					} else {
-						aresAnt->prox = aresta->prox;
+						aresAnt->prox = aresAux->prox;
 					}
+					free(aresAux);
 				}
 				aresAnt = aresAux;
-				aresAux = aresAux->prox;
+				aresAux = prox;
 			}
 			aux = aux->prox;
 		}
 		
-		free(aresta);
 	}
 }
 
@@ -274,14 +275,54 @@ void DeletarVertice(Grafo * g, int vertice) {
 	
 	Aresta * arestaAux = vert->primeiroVizinho;
 	
+	//Matar a lista de vertice 
+	
 	while(arestaAux != NULL) {
 		Aresta * prox = arestaAux->prox;
-		RetirarIncidenciaDaAresta(g, arestaAux);
+		free(arestaAux);
 		arestaAux = prox;
 	}
+	vert->primeiroVizinho = NULL;
 	
+	RetirarIncidenciaDaAresta(g,vert);
+	
+	
+	Vertice * auxVert = g->inicial;
+	Vertice * antVert = NULL;
+	
+	while (auxVert != NULL) {
+		if(auxVert == vert) {
+			if(antVert == NULL) {
+				g->inicial = auxVert->prox;
+			} else {
+				antVert->prox = auxVert->prox;
+			}
+			free(auxVert);
+			break;
+		}
+		antVert = auxVert;
+		auxVert = auxVert->prox;
+	}
+	
+	/*
+	Vertice * vert2 = g->inicial;
+	Vertice * anteriorVert = NULL;
+	
+	
+	
+	//Pegar o anterior do vertice
+	while (vert2 != NULL) {
+		anteriorVert = vert2;
+		if(vert2 == vert) {
+			
+		}
+		vert2 = vert2->prox;
+	} 
+	 
+	 
+	 
 	//Matar o vertice
-	free(vert);
+	//free(vert);*/
 	
 	/*
 	//Retirar incidencia daquele vertice nas listas
