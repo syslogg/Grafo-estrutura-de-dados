@@ -29,6 +29,9 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2);
 //Caminho minimo com bellman ford
 void CaminhoMinimo(Grafo * g, int vertice1, int vertice2);
 
+//Salvar arquivo
+void SalvarGrafo(Grafo * g, char * arquivo);
+
 //Quantidades
 int QtdVertice(Grafo * g);
 int QtdArestas(Grafo * g);

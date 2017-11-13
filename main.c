@@ -96,6 +96,7 @@ void console (Grafo * g) {
 void command(Grafo * g, char * cmd) {
 	
 	int params[500];
+	char paramStr[100];
 	
 	if(sscanf(cmd,"CV %c",&params[0]) > 0) {
 		char letter = params[0];
@@ -142,8 +143,8 @@ void command(Grafo * g, char * cmd) {
 			command(g,buf);
 		}
 		
-	} else if (!strcmp(cmd,"SVG")) {
-		
+	} else if (sscanf(cmd,"SVG %s",paramStr) > 0) {
+		SalvarGrafo(g,paramStr);
 	} 
 	else {
 		printf("\nComando inexistente!\n\n");

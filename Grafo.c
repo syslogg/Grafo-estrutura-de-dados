@@ -516,6 +516,21 @@ void BellmanFord(Grafo * g, int vertice, int origem) {
 }
 
 
+void SalvarGrafo(Grafo * g, char * arquivo) {
+	if(g != NULL) {
+		
+		FILE * file = fopen(arquivo,"w");
+		char codeStr[1030];
+		
+		//Retorna os vertices como texto
+		Vertice * auxVert = g->inicial;
+		
+		while (auxVert != NULL){
+			
+		}
+		
+	}
+}
 
 void CaminhoMinimo(Grafo * g, int vertice1, int vertice2) {
 	
@@ -612,7 +627,6 @@ void RemoveArestaPorId(Grafo * g,int id) {
 		Aresta * ant2 = ant->primeiroVizinho;
 		while(ant2 != NULL) {
 			if(ant2->id == id){
-				printf("ID - %d - %c --- %c\n", ant2->id ,ant->key, ant2->vert->key);
 				DeletarAresta(g,ant->key, ant2->vert->key);
 				return;
 			}
