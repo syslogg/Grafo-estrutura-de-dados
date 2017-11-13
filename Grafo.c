@@ -528,7 +528,6 @@ void SalvarGrafo(Grafo * g, char * arquivo) {
 		while (auxVert != NULL){
 			
 		}
-		
 	}
 }
 
