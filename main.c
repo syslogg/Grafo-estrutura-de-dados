@@ -114,17 +114,35 @@ void command(Grafo * g, char * cmd) {
 		
 	} else if (!strcmp(cmd,"IG")) {
 		Imprimir(g);
+	} else if (!strcmp(cmd,"HELP")) {
+		printf("\n-= Sistema de Grafos - Comandos =-\n");
+		printf("* CV [chave] - Criar vertice\n");
+		printf("* CA [chave] [vertice_ori] [vertice_dest] [peso] - Criar aresta\n");
+		printf("* RV [chave] - Deletar vertices\n");
+		printf("* RA [chave] - Deletar Aresta\n");
+		printf("* IG - Imprimir vertices\n");
+		printf("* AM - Arvore de caminho minimo\n");
+		printf("* CRG [nome_arquivo] - Carrega grafo pelo arquivo\n");
+		printf("* SVG [nome_arquivo] - Cria arquivo com grafo da memoria\n");
+		printf("* FM - Destroi grafo e encerra o programa\n\n");
+	} else if (!strcmp(cmd,"FM")) {
+		destruir(g);
+		printf("Fim do programa!\n");
+		gets();
+		exit(1);
 	} else if (sscanf(cmd,"RA %d",&params[0]) > 0) {
 		RemoveArestaPorId(grafo,params[0]);
-	} else if (!strcmp(cmd,"CRG")) {
+	} else if (sscanf(cmd,"CRG %s",paramStr) > 0) {
 		//Executar arquivo
-		FILE * f = fopen("arquivo.txt","r");
+		FILE * f = fopen(paramStr,"r");
 		
 		if(f == NULL) {
-			printf("Erro ao executar o arquivo");
+			printf("Arquivo Inexistente\n");
 			return;
 		}
-		
+		destruir(g);
+		g = criar();
+
 		char buf[50];
 		
 		while((fgets(buf, sizeof(buf), f)) != NULL){
@@ -145,8 +163,7 @@ void command(Grafo * g, char * cmd) {
 		
 	} else if (sscanf(cmd,"SVG %s",paramStr) > 0) {
 		SalvarGrafo(g,paramStr);
-	} 
-	else {
+	} else {
 		printf("\nComando inexistente!\n\n");
 	}
 	

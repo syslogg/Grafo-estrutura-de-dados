@@ -10,7 +10,7 @@ typedef struct vertice Vertice;
 Vertice * BuscarVertice (Grafo * g, int key);
 
 struct grafo {
-	No * inicial;
+	Vertice * inicial;
 };
 struct vertice {
 	int key;
@@ -516,28 +516,63 @@ void BellmanFord(Grafo * g, int vertice, int origem) {
 	
 }
 
-char * CriaVerticeText(int key) {
-	char buff[50];
-	sprintf(buff, "CV %c", key);
-	return buff;
+void CriaVerticeText(char * buff,int key) {
+	sprintf(buff, "CV %c\n", key);
+}
+
+void CriaArestaText(char * buff, int key, int aresta1, int aresta2, int peso) {
+	sprintf(buff,"CA %d %c %c %d\n", key,aresta1,aresta2,peso);
+}
+
+int BuscaEmArray(int * arr, int val) {
+	int i;
+
+	for(i = 0; i < 32; i++){
+		if(arr[i] == val) {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 void SalvarGrafo(Grafo * g, char * arquivo) {
 	if(g != NULL) {
 		
 		FILE * file = fopen(arquivo,"w");
-		char codeStr[10000] = "";
+		char codeStr[10000];
 		
 		//Retorna os vertices como texto
 		Vertice * auxVert = g->inicial;
 		
 		while (auxVert != NULL){
-			sprintf(codeStr,"%s%s",codeStr,CriaVerticeText(auxVert->key));
-			sprintf(codeStr,"%s%s",codeStr"\n");
+			char cvBuff[32];
+			CriaVerticeText(cvBuff,auxVert->key);
+
+			strcat(codeStr, cvBuff);
 			auxVert = auxVert->prox;
 		}
 
-		printf("%s", codeStr);
+		//retorna o aresta como Textos
+		auxVert = g->inicial;
+		int vertice[32];
+		int i = 0;
+
+		while (auxVert != NULL){
+			Aresta * auxAresta = auxVert->primeiroVizinho;
+			while(auxAresta != NULL){
+				if(!BuscaEmArray(vertice,auxAresta->id)){
+					vertice[i++] = auxAresta->id;
+					char caBuff[32];
+					CriaArestaText(caBuff,auxAresta->id, auxVert->key, auxAresta->vert->key,auxAresta->peso);
+					strcat(codeStr,caBuff);
+				}
+				auxAresta = auxAresta->prox;
+			}
+
+			auxVert = auxVert->prox;
+		}
+		fprintf(file,"%s",codeStr);
+		fclose(file);
 	}
 }
 
