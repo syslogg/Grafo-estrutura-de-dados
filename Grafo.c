@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 #include "Grafo.h"
 typedef struct no No;
 typedef struct aresta Aresta;
@@ -84,7 +85,7 @@ void IncluirVertice(Grafo * g, int key) {
 			return;	
 		} 
 		
-		//Percorre até chegar no final
+		//Percorre atï¿½ chegar no final
 		while(ant->prox != NULL) {
 			ant = ant->prox;
 		}
@@ -515,19 +516,28 @@ void BellmanFord(Grafo * g, int vertice, int origem) {
 	
 }
 
+char * CriaVerticeText(int key) {
+	char buff[50];
+	sprintf(buff, "CV %c", key);
+	return buff;
+}
 
 void SalvarGrafo(Grafo * g, char * arquivo) {
 	if(g != NULL) {
 		
 		FILE * file = fopen(arquivo,"w");
-		char codeStr[1030];
+		char codeStr[10000] = "";
 		
 		//Retorna os vertices como texto
 		Vertice * auxVert = g->inicial;
 		
 		while (auxVert != NULL){
-			
+			sprintf(codeStr,"%s%s",codeStr,CriaVerticeText(auxVert->key));
+			sprintf(codeStr,"%s%s",codeStr"\n");
+			auxVert = auxVert->prox;
 		}
+
+		printf("%s", codeStr);
 	}
 }
 
