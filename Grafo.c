@@ -3,6 +3,10 @@
 #include <limits.h>
 #include <string.h>
 #include "Grafo.h"
+
+#define TAM_VERT_MAX 32
+#define TAM_ARES_MAX 64
+
 typedef struct no No;
 typedef struct aresta Aresta;
 typedef struct vertice Vertice;
@@ -18,6 +22,7 @@ struct vertice {
 	int peso;
 	Aresta * primeiroVizinho;
 	Vertice * anterior;
+	int pai;
 };
 
 struct aresta {
@@ -74,6 +79,7 @@ void IncluirVertice(Grafo * g, int key) {
 		v->prox = NULL;
 		v->primeiroVizinho = NULL;
 		v->peso = -1;
+		v->pai = key;
 		g->inicial = v;
 		
 		
@@ -92,6 +98,7 @@ void IncluirVertice(Grafo * g, int key) {
 		
 		Vertice * n = (Vertice *) malloc(sizeof(Vertice));
 		n->key = key;
+		n->pai = key;
 		n->prox = NULL;
 		n->primeiroVizinho = NULL;
 		n->peso = -1;
@@ -176,6 +183,86 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 	
 }
 
+int * Vizinhos(Grafo * g, int vertice){
+	if(g != NULL) {
+		Vertice * aux = g->inicial;
+		int * arr = (int *) malloc(TAM_VERT_MAX*sizeof(int));
+		int i = 0;
+		while(aux != NULL) {
+			arr[i++] = aux->key;
+			aux = aux->prox;
+		}
+		return arr;
+	}
+	return NULL;
+}
+
+int GetPai(Grafo * g, int vertice){
+	if(g != NULL) {
+		Vertice * vert = BuscarVertice(g, vertice);
+		return vert->pai;
+	}
+	return -1;
+}
+
+void SetPai(Grafo * g, int vertice, int valor){
+	if(g != NULL) {
+		Vertice * vert = BuscarVertice(g, vertice);
+		vert->pai = valor;
+	}
+}
+
+int * ArestaIdsPorVertice(Grafo * g, int vertice) {
+	if(g != NULL){
+		Vertice * vert =  BuscarVertice(g, vertice);
+		if(vert != NULL) {
+			Aresta * aux = vert->primeiroVizinho;
+			int * arr = (int *) malloc(TAM_ARES_MAX*sizeof(int));
+			int i = 0;
+			while (aux != NULL) {
+				arr[i++] = aux->id;
+				aux = aux->prox;
+			}
+			return arr;
+		} else {
+			return NULL;
+		}
+	}
+	return NULL;
+}
+
+int * ListaDeVertices(Grafo * g) {
+	if (g != NULL) {
+		Vertice * aux = g->inicial;
+		int * arrVert = (int *) malloc(TAM_VERT_MAX * sizeof(int));
+		int i = 0;
+		while (aux != NULL){
+			arrVert[i++] = aux->key;
+			aux = aux->prox;
+		}
+		return arrVert;
+	}
+	return NULL;
+}
+
+int PesoDaAresta (Grafo * g, int arestaId){
+	if(g != NULL) {
+		Vertice * auxVert = g->inicial;
+		
+		while (auxVert != NULL){
+			Aresta * auxAresta =  auxVert->primeiroVizinho;
+			while (auxAresta != NULL) {
+				if(arestaId == auxAresta->id){
+					return auxAresta->peso;
+				}
+			}
+			auxVert = auxVert->prox;
+		}
+
+	}
+	return -1;
+}
+
 void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 	if(ExisteVertice(g,vertice1) == 0) {
 		printf("\nERROR: Nao existe o vertice com chave '%c'.\n",vertice1);
@@ -186,7 +273,7 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 		return;
 	}
 	if(ExisteAresta(g,vertice1,vertice2) == 0) {
-		printf("\ERROR: Nao existe arestas entre '%c' e '%c'.\n",vertice1,vertice2);
+		printf("\nERROR: Nao existe arestas entre '%c' e '%c'.\n",vertice1,vertice2);
 		return;
 	}
 	
@@ -527,7 +614,7 @@ void CriaArestaText(char * buff, int key, int aresta1, int aresta2, int peso) {
 int BuscaEmArray(int * arr, int val) {
 	int i;
 
-	for(i = 0; i < 32; i++){
+	for(i = 0; i < TAM_VERT_MAX; i++){
 		if(arr[i] == val) {
 			return 1;
 		}
@@ -554,7 +641,7 @@ void SalvarGrafo(Grafo * g, char * arquivo) {
 
 		//retorna o aresta como Textos
 		auxVert = g->inicial;
-		int vertice[32];
+		int vertice[TAM_VERT_MAX];
 		int i = 0;
 
 		while (auxVert != NULL){

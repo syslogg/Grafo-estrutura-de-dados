@@ -1,5 +1,5 @@
 
-//Definição
+//Definiï¿½ï¿½o
 
 typedef struct grafo Grafo;
 
@@ -42,9 +42,17 @@ int getPesoByIdVertice(Grafo * g, int vertice);
 
 void RemoveArestaPorId(Grafo * g,int id);
 
+//Algoritmo de Kruskal
+int * Vizinhos(Grafo * g, int vertice);
+int PesoDaAresta (Grafo * g, int arestaId);
+int * ListaDeVertices(Grafo * g);
+int * ArestaIdsPorVertice(Grafo * g, int vertice);
+int GetPai(Grafo * g, int vertice);
+void SetPai(Grafo * g, int vertice, int valor);
+
 // - TODO
 /*
 	- Quantidade de vertice e aresta
-	- Implementar informações de vertices e aresta
+	- Implementar informaï¿½ï¿½es de vertices e aresta
 */
 
