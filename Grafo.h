@@ -47,8 +47,10 @@ int * Vizinhos(Grafo * g, int vertice);
 int PesoDaAresta (Grafo * g, int arestaId);
 int * ListaDeVertices(Grafo * g);
 int * ArestaIdsPorVertice(Grafo * g, int vertice);
-int GetPai(Grafo * g, int vertice);
-void SetPai(Grafo * g, int vertice, int valor);
+int * ArestaOrdenadas(Grafo *g, int * retTam);
+int GetVerticeUm(Grafo * g,int arestaId);
+int GetVerticeDois(Grafo * g,int arestaId);
+
 
 // - TODO
 /*

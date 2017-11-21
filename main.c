@@ -163,10 +163,66 @@ void command(Grafo * g, char * cmd) {
 		
 	} else if (sscanf(cmd,"SVG %s",paramStr) > 0) {
 		SalvarGrafo(g,paramStr);
+	} else if (!strcmp(cmd,"AM")) {
+		kruskal(g);
 	} else {
 		printf("\nComando inexistente!\n\n");
 	}
 	
+}
+
+void unir(int * subset, int v1, int v2)
+{
+	int v1_set = buscar(subset, v1);
+	int v2_set = buscar(subset, v2);
+	subset[v1_set] = v2_set;
+}
+
+//Busca o subconjunto do elemento I
+int buscar(int * subset, int i){
+	if(subset[i] == -1){
+		return i;
+	}
+	return buscar(subset,subset[i]);
+}
+
+void kruskal(Grafo * g){
+	if(g != NULL) {
+
+		int countAresta,i;
+		int * arestasOrdenadas = ArestaOrdenadas(g, &countAresta);
+		int test = arestasOrdenadas[2];
+		//Ids dos vertices da arvore de caminho minimo
+		int arvore[countAresta];
+		int arvoreCount = 0;
+
+		//Instancia o subconjunto
+		//TODO:
+		int subset[500];
+		for (i = 0; i < 500; i++){
+			subset[i] = -1;
+		}
+
+		for (i = 0; i < countAresta;i++){
+			int v1 = buscar(subset,GetVerticeUm(g,arestasOrdenadas[i]));
+			int v2 = buscar(subset,GetVerticeDois(g,arestasOrdenadas[i]));
+
+			//Se forem diferente, nao formam ciclo
+			if(v1 != v2){
+				arvore[arvoreCount++] = arestasOrdenadas[i];
+				unir(subset,v1,v2);
+			}
+		}
+
+		//imprimir arestas da arvore
+		printf("\nIds das arestas que fazem parte da arvore geradora minima:\n");
+		printf("[ ");
+		for (i = 0; i < arvoreCount; i++){
+			printf("%d ",arvore[i]);
+		}
+		printf("]\n");
+
+	}
 }
 
 

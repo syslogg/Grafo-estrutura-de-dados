@@ -12,9 +12,11 @@ typedef struct aresta Aresta;
 typedef struct vertice Vertice;
 
 Vertice * BuscarVertice (Grafo * g, int key);
+Aresta * BuscarAresta (Grafo * g, int arestaId);
 
 struct grafo {
 	Vertice * inicial;
+	int countVertice;
 };
 struct vertice {
 	int key;
@@ -22,7 +24,7 @@ struct vertice {
 	int peso;
 	Aresta * primeiroVizinho;
 	Vertice * anterior;
-	int pai;
+	int countAresta;
 };
 
 struct aresta {
@@ -41,6 +43,7 @@ Vertice * BuscarVertice (Grafo * g, int key);
 Grafo * criar(){
 	Grafo * g = (Grafo *) malloc(sizeof(Grafo));
 	g->inicial = NULL;
+	g->countVertice = 0;
 	return g;
 }
 
@@ -79,10 +82,9 @@ void IncluirVertice(Grafo * g, int key) {
 		v->prox = NULL;
 		v->primeiroVizinho = NULL;
 		v->peso = -1;
-		v->pai = key;
+		v->countAresta = 0;//parei aqui
+		g->countVertice++;
 		g->inicial = v;
-		
-		
 	} else {
 		Vertice * ant = g->inicial;
 		
@@ -98,11 +100,11 @@ void IncluirVertice(Grafo * g, int key) {
 		
 		Vertice * n = (Vertice *) malloc(sizeof(Vertice));
 		n->key = key;
-		n->pai = key;
 		n->prox = NULL;
 		n->primeiroVizinho = NULL;
 		n->peso = -1;
 		ant->prox = n;
+		g->countVertice++;
 	}
 		
 }
@@ -136,6 +138,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 		a->vert = vert2;
 		a->id = id;
 		vert1->primeiroVizinho = a;
+		vert1->countAresta++;
 	} else {
 		Aresta * ant = vert1->primeiroVizinho;
 		
@@ -149,6 +152,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 		a->vert = vert2;
 		a->id = id;
 		ant->prox = a;
+		vert1->countAresta++;
 		
 	}
 	
@@ -162,6 +166,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 			a->vert = vert1;
 			a->id = id;
 			vert2->primeiroVizinho = a;
+			vert2->countAresta++;
 		} else {
 			Aresta * ant = vert2->primeiroVizinho;
 			
@@ -175,6 +180,7 @@ void IncluirAresta(Grafo * g, int vertice1, int vertice2, int peso, int id) {
 			a->vert = vert1;
 			a->id = id;
 			ant->prox = a;
+			vert2->countAresta++;
 			
 		}
 	}
@@ -197,20 +203,6 @@ int * Vizinhos(Grafo * g, int vertice){
 	return NULL;
 }
 
-int GetPai(Grafo * g, int vertice){
-	if(g != NULL) {
-		Vertice * vert = BuscarVertice(g, vertice);
-		return vert->pai;
-	}
-	return -1;
-}
-
-void SetPai(Grafo * g, int vertice, int valor){
-	if(g != NULL) {
-		Vertice * vert = BuscarVertice(g, vertice);
-		vert->pai = valor;
-	}
-}
 
 int * ArestaIdsPorVertice(Grafo * g, int vertice) {
 	if(g != NULL){
@@ -296,6 +288,7 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 			} else {
 				vert1->primeiroVizinho = aresta1->prox;
 			}
+			vert1->countAresta--;
 			free(aresta1);
 			break;
 		}
@@ -313,6 +306,7 @@ void DeletarAresta(Grafo * g, int vertice1, int vertice2) {
 			} else {
 				vert2->primeiroVizinho = aresta2->prox;
 			}
+			vert2->countAresta--;
 			free(aresta2);
 			break;
 		}
@@ -341,6 +335,7 @@ void RetirarIncidenciaDaAresta(Grafo * g, Vertice * vertice) {
 					} else {
 						aresAnt->prox = aresAux->prox;
 					}
+					aux->countAresta--;
 					free(aresAux);
 				}
 				aresAnt = aresAux;
@@ -349,7 +344,51 @@ void RetirarIncidenciaDaAresta(Grafo * g, Vertice * vertice) {
 			aux = aux->prox;
 		}
 		
+	} 
+}
+
+int * ArestaOrdenadas(Grafo * g, int * retTam){
+	if(g != NULL) {
+		//Vertice * vert = BuscarVertice(g,verticeId);
+
+		int countArestas = 0;
+		int arestasContadas[TAM_ARES_MAX];
+		Aresta * arestas[TAM_ARES_MAX];
+		Vertice * vertAux = g->inicial;
+
+		//Add arestas sem duplicaçao
+		while (vertAux != NULL) {
+			Aresta * arestaAux = vertAux->primeiroVizinho;
+			while (arestaAux != NULL) {
+				if(!BuscaEmArray(arestasContadas,arestaAux->id)){
+					arestasContadas[countArestas] = arestaAux->id;
+					arestas[countArestas++] = arestaAux;
+				}
+				arestaAux = arestaAux->prox;
+			}
+			vertAux = vertAux->prox;
+		}
+		int i,n;
+
+		//Bubble sort
+		for (i = 1; i < countArestas; i++){
+			for (n = 0; n < i;n++){
+				if(arestas[n]->peso > arestas[n+1]->peso) {
+					Aresta * arestaAux = arestas[n];
+					arestas[n] = arestas[n+1];
+					arestas[n+1] = arestaAux;
+				}
+			}
+		}
+
+		int * idsOrdenados = (int *) malloc(countArestas * sizeof(int));
+		for(i = 0; i < countArestas; i++){
+			idsOrdenados[i] = arestas[i]->id;
+		}
+		*retTam = countArestas;
+		return idsOrdenados;
 	}
+	return NULL;
 }
 
 void DeletarVertice(Grafo * g, int vertice) {
@@ -386,6 +425,7 @@ void DeletarVertice(Grafo * g, int vertice) {
 				antVert->prox = auxVert->prox;
 			}
 			free(auxVert);
+			g->countVertice--;
 			break;
 		}
 		antVert = auxVert;
@@ -770,6 +810,31 @@ void RemoveArestaPorId(Grafo * g,int id) {
 	
 }
 
+int GetVerticeUm(Grafo * g,int arestaId) {
+	if (g != NULL){
+		Aresta * aresta = BuscarAresta(g,arestaId);
+		Vertice * aux = g->inicial;
+		while (aux != NULL){
+			Aresta * auxAres = aux->primeiroVizinho;
+			while (auxAres != NULL) {
+				if(auxAres = aresta){
+					return aux->key;
+				}
+				auxAres = auxAres->prox;
+			}
+			aux = aux->prox;
+		}
+	}
+	return -1;
+}
+
+int GetVerticeDois(Grafo * g,int arestaId) {
+	if (g != NULL){
+		Aresta * aresta = BuscarAresta(g,arestaId);
+		return aresta->vert->key;
+	}
+	return -1;
+}
 
 //Commands
 
@@ -778,7 +843,7 @@ void Imprimir(Grafo * g){
 	
 	
 	while(ant != NULL) {
-		printf("%c - Peso: %d -> ",ant->key, ant->peso);
+		printf("%c -> ",ant->key);
 		
 		Aresta * ant2 = ant->primeiroVizinho;
 		printf("[ ");
@@ -827,6 +892,24 @@ Vertice * BuscarVertice (Grafo * g, int key) {
 		if(ant->key == key) {
 			return ant;
 		}
+		ant = ant->prox;
+	}
+}
+
+Aresta * BuscarAresta (Grafo * g, int arestaId) {
+	Vertice * ant = g->inicial;
+	while(ant != NULL) {
+		Aresta * arestaAux = ant->primeiroVizinho;
+
+		while (arestaAux != NULL){
+
+			if(arestaAux->id == arestaId){
+				return arestaAux;
+			}
+
+			arestaAux = arestaAux->prox;
+		}
+		
 		ant = ant->prox;
 	}
 }
