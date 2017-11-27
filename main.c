@@ -213,14 +213,16 @@ void kruskal(Grafo * g){
 				unir(subset,v1,v2);
 			}
 		}
-
+		int custoTotal = 0;
 		//imprimir arestas da arvore
 		printf("\nIds das arestas que fazem parte da arvore geradora minima:\n");
 		printf("[ ");
 		for (i = 0; i < arvoreCount; i++){
 			printf("%d ",arvore[i]);
+			custoTotal += getPesoByIdAresta(g,arvore[i]);
 		}
 		printf("]\n");
+		printf("Custo total: %d\n\n", custoTotal);
 
 	}
 }

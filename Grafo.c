@@ -352,7 +352,7 @@ int * ArestaOrdenadas(Grafo * g, int * retTam){
 		//Vertice * vert = BuscarVertice(g,verticeId);
 
 		int countArestas = 0;
-		int arestasContadas[TAM_ARES_MAX];
+		int * arestasContadas = (int *) malloc(TAM_ARES_MAX*sizeof(int));
 		Aresta * arestas[TAM_ARES_MAX];
 		Vertice * vertAux = g->inicial;
 
@@ -389,6 +389,14 @@ int * ArestaOrdenadas(Grafo * g, int * retTam){
 		return idsOrdenados;
 	}
 	return NULL;
+}
+
+int getPesoByIdAresta(Grafo * g, int vertice){
+	if(g != NULL) {
+		Aresta * aresta = BuscarAresta(g,vertice);
+		return aresta->peso;
+
+	}
 }
 
 void DeletarVertice(Grafo * g, int vertice) {
@@ -786,7 +794,6 @@ int getPesoByIdVertice(Grafo * g, int vertice) {
 	
 	Vertice * vert = BuscarVertice(g,vertice);
 	return vert->peso;
-	
 }
 
 void RemoveArestaPorId(Grafo * g,int id) {
