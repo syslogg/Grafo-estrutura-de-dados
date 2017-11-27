@@ -1,0 +1,13 @@
+CV A
+CV B
+CV E
+CV H
+CV I
+CV F
+CA 1 A F 1
+CA 2 A E 5
+CA 3 B E 1
+CA 4 B I 9
+CA 5 E H 8
+CA 6 H I 10
+CA 7 I F 6
