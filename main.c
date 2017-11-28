@@ -226,9 +226,3 @@ void kruskal(Grafo * g){
 
 	}
 }
-
-
-
-
-
-
